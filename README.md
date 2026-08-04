@@ -38,19 +38,24 @@ The showcase is designed to feel like a high-end editorial travel magazine, empl
 
 ---
 
-## 🖥️ Local Preview & Testing
+## 🖥️ Live Preview & Testing
 
-To preview and review these dashboard and chatbot updates locally:
+To preview and review the new dashboard and chatbot updates on any device:
 
+### 1. GitHub Pull Request Preview (Recommended)
+Since this project is configured for Vercel, opening a Pull Request will automatically trigger a **Vercel Preview Deployment**. 
+* Reviewers can find the generated preview link directly under the Pull Request checks section on GitHub.
+* This link is public and can be opened on any laptop, tablet, or mobile phone to preview the live updates.
+
+### 2. Local Development
+To run the server locally on your own machine:
 1. Install project dependencies:
    ```bash
    npm install
    ```
-
 2. Run the local development server:
    ```bash
    npm run dev
    ```
-
-3. Open the following local preview link in your browser:
+3. Open the following local link:
    👉 **[http://localhost:8080/](http://localhost:8080/)**
