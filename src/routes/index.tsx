@@ -17,6 +17,8 @@ import {
   Heart,
   ChevronRight,
   BookOpen,
+  Menu,
+  X,
 } from "lucide-react";
 
 import heroExterior from "@/assets/hero-exterior.jpg";
@@ -259,15 +261,27 @@ function Index() {
     "overview"
   );
   const [foodFilter, setFoodFilter] = useState<"breakfast" | "meals" | "beverages">("breakfast");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-all duration-300">
-      {/* Header */}
+      {/* Header with Hamburger Menu Toggle */}
       <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-          <div>
-            <span className="font-display text-2xl leading-none">VBIS INN</span>
-            <span className="ml-3 hairline-label text-muted-foreground">Tumakuru</span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="inline-flex items-center justify-center p-1.5 rounded-md text-foreground hover:bg-secondary focus:outline-none"
+              aria-label="Toggle navigation menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+            <div>
+              <span className="font-display text-2xl leading-none">VBIS INN</span>
+              <span className="ml-3 hairline-label text-muted-foreground hidden sm:inline-block">
+                Tumakuru
+              </span>
+            </div>
           </div>
           <a
             href={`tel:${PHONE}`}
@@ -279,6 +293,71 @@ function Index() {
           </a>
         </div>
       </header>
+
+      {/* Mobile Navigation Drawer Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-ink/40 backdrop-blur-xs animate-fade-in"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="fixed top-0 left-0 bottom-0 z-40 w-64 bg-background border-r border-border p-6 flex flex-col gap-6 shadow-2xl animate-slide-in-left"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-border pb-4">
+              <span className="font-display text-2xl leading-none text-primary">Navigation</span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <nav className="flex flex-col gap-2">
+              {[
+                { id: "overview", label: "Overview", icon: Compass },
+                { id: "stay", label: "Stay & Rooms", icon: BedDouble },
+                { id: "dining", label: "Taste of Tumakuru", icon: Utensils },
+                { id: "guide", label: "Local Guide & Map", icon: MapPin },
+                { id: "story", label: "Our Story", icon: BookOpen },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id as any);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-medium text-left transition-colors ${
+                      isActive
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    <Icon
+                      className={`h-4 w-4 ${isActive ? "text-brass-foreground" : "text-brass"}`}
+                    />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </nav>
+
+            <div className="mt-auto border-t border-border pt-4">
+              <a
+                href={`tel:${PHONE}`}
+                className="flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 w-full"
+              >
+                <Phone className="h-4 w-4" />
+                Call Front Desk
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section with Asymmetrical Gradient Mask */}
       <section className="relative">
