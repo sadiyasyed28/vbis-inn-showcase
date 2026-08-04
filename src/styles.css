@@ -179,3 +179,11 @@
   text-transform: uppercase;
   font-weight: 500;
 }
+
+/* Hide Lovable branding watermark if any is injected dynamically */
+[class*="lovable"], [id*="lovable"], a[href*="lovable.dev"], iframe[src*="lovable"] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
