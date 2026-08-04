@@ -241,11 +241,12 @@ function Index() {
               key={room.name}
               className="flex flex-col border border-border bg-card p-6 transition-shadow hover:shadow-lg"
             >
-              {i === 0 && (
-                <span className="hairline-label mb-4 w-fit bg-accent px-2 py-1 text-accent-foreground">
-                  Best value
-                </span>
-              )}
+              <span
+                className={`hairline-label mb-4 w-fit px-2 py-1 ${i === 0 ? "bg-accent text-accent-foreground" : "invisible"}`}
+              >
+                Best value
+              </span>
+
               <h3 className="text-2xl">{room.name}</h3>
               <p className="mt-2 flex-1 text-sm text-muted-foreground">{room.detail}</p>
               <p className="mt-6 font-display text-3xl">
