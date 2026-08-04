@@ -152,3 +152,30 @@
     color: var(--color-foreground);
   }
 }
+
+.dark {
+  --ink: oklch(0.24 0.028 155);
+  --brass: oklch(0.75 0.115 78);
+  --brass-foreground: oklch(0.22 0.03 155);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility hairline-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
