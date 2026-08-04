@@ -36,4 +36,21 @@ The showcase is designed to feel like a high-end editorial travel magazine, empl
 *   **Icons**: [Lucide React](https://lucide.dev/)
 *   **SEO & Metadata**: Optimized meta descriptions, Open Graph protocol, canonical tags, and structured JSON-LD data for Google Rich Results.
 
+---
 
+## 🖥️ Local Preview & Testing
+
+To preview and review these dashboard and chatbot updates locally:
+
+1. Install project dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Run the local development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open the following local preview link in your browser:
+   👉 **[http://localhost:8080/](http://localhost:8080/)**
