@@ -577,7 +577,7 @@ function Index() {
         {activeTab === "guide" && (
           <section className="animate-fade-in py-16">
             <div className="mx-auto max-w-6xl px-5">
-              <div className="grid gap-12 md:grid-cols-12 md:items-center">
+              <div className="grid gap-12 md:grid-cols-12 md:items-start">
                 <div className="md:col-span-6">
                   <p className="hairline-label text-brass font-medium">Explore the Region</p>
                   <h2 className="text-4xl mt-2 font-display">Attractions Within Quick Reach</h2>
@@ -612,15 +612,31 @@ function Index() {
                   </div>
                 </div>
 
-                <div className="md:col-span-6 relative">
-                  <img
-                    src={nearbyImg}
-                    alt="Scenic Jain temple on top of Mandaragiri Hill near Tumakuru"
-                    className="aspect-4/3 w-full object-cover shadow-xl rounded-sm"
-                  />
-                  <div className="absolute top-4 right-4 bg-background/95 backdrop-blur px-4 py-3 rounded-sm border border-border shadow-md">
-                    <span className="text-xs font-semibold text-primary block">Highway Proximity</span>
-                    <span className="text-xs text-muted-foreground">Just 5 mins from NH-48</span>
+                <div className="md:col-span-6 space-y-6">
+                  {/* Google Maps Location Iframe Embed */}
+                  <div className="w-full h-[320px] border border-border rounded-sm overflow-hidden shadow-md">
+                    <iframe
+                      src="https://maps.google.com/maps?q=VBIS%20INN%20Melekote%20TUDA%20Layout%20Tumakuru%20Karnataka%20572101&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="VBIS INN Live Location Map"
+                    ></iframe>
+                  </div>
+
+                  <div className="relative">
+                    <img
+                      src={nearbyImg}
+                      alt="Scenic Jain temple on top of Mandaragiri Hill near Tumakuru"
+                      className="aspect-video w-full object-cover shadow-md rounded-sm animate-fade-in"
+                    />
+                    <div className="absolute top-4 right-4 bg-background/95 backdrop-blur px-4 py-3 rounded-sm border border-border shadow-sm">
+                      <span className="text-xs font-semibold text-primary block">Highway Proximity</span>
+                      <span className="text-xs text-muted-foreground">Just 5 mins from NH-48</span>
+                    </div>
                   </div>
                 </div>
               </div>
