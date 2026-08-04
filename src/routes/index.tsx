@@ -63,36 +63,42 @@ const nearbyWithTips = [
     time: "7 min",
     rating: "4.7",
     tip: "Famous 75-foot tall Lord Hanuman statue. Best visited in the morning.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Sri+Kote+Anjaneya+Statue+Tumakuru",
   },
   {
     name: "Amanikere Park",
     time: "8 min",
     rating: "4.2",
     tip: "Beautiful lakefront park with walkways and boating. Great for peaceful evening walks.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Amanikere+Park+Tumakuru",
   },
   {
     name: "Shree Siddaganga Mutt",
     time: "21 min",
     rating: "4.8",
     tip: "Historic and sacred spiritual center offering daily free meals to thousands of pilgrims.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Shree+Siddaganga+Mutt+Tumakuru",
   },
   {
     name: "Mandaragiri Hill",
     time: "26 min",
     rating: "4.6",
     tip: "Unique peacock-feather shaped Jain temple with a climb of 400 steps. Scenic sunset views.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Mandaragiri+Hill+Tumakuru",
   },
   {
     name: "Namada Chilume Deer Park",
     time: "31 min",
     rating: "4.5",
     tip: "Wooded deer park with nature trails leading to a spring.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Namada+Chilume+Deer+Park+Tumakuru",
   },
   {
     name: "Ramadevara Betta",
     time: "35 min",
     rating: "4.4",
     tip: "Hills featuring stairs leading to multiple temples, plus sweeping views.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Ramadevara+Betta+Tumakuru",
   },
 ];
 
@@ -583,16 +589,22 @@ function Index() {
                   <h2 className="text-4xl mt-2 font-display">Attractions Within Quick Reach</h2>
                   <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
                     Tumakuru is home to beautiful hills, historic temples, and scenic lakes. 
-                    Use our custom distance index below to plan your trip itinerary.
+                    Click on any attraction to open directions in Google Maps.
                   </p>
 
                   <div className="mt-8 divide-y divide-border border-y border-border">
                     {nearbyWithTips.map((place) => (
                       <div key={place.name} className="py-4 group">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm font-semibold group-hover:text-brass transition-colors">
-                            {place.name}
-                          </span>
+                          <a
+                            href={place.mapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-semibold hover:text-brass hover:underline transition-colors flex items-center gap-1.5"
+                          >
+                            <span>{place.name}</span>
+                            <Navigation className="h-3 w-3 text-brass opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </a>
                           <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
                             <span className="flex items-center gap-0.5">
                               <Star className="h-3.5 w-3.5 fill-brass text-brass" />
