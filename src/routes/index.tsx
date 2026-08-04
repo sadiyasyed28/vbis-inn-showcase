@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   Phone,
   MapPin,
@@ -11,6 +12,11 @@ import {
   ShieldCheck,
   Clock,
   Navigation,
+  Compass,
+  BedDouble,
+  Heart,
+  ChevronRight,
+  BookOpen,
 } from "lucide-react";
 
 import heroExterior from "@/assets/hero-exterior.jpg";
@@ -51,13 +57,43 @@ const rooms = [
   },
 ];
 
-const nearby = [
-  { name: "Sri Kote Anjaneya Statue", time: "7 min", rating: "4.7" },
-  { name: "Amanikere Park", time: "8 min", rating: "4.2" },
-  { name: "Shree Siddaganga Mutt", time: "21 min", rating: "4.8" },
-  { name: "Mandaragiri Hill", time: "26 min", rating: "4.6" },
-  { name: "Namada Chilume Deer Park", time: "31 min", rating: "4.5" },
-  { name: "Ramadevara Betta", time: "35 min", rating: "4.4" },
+const nearbyWithTips = [
+  {
+    name: "Sri Kote Anjaneya Statue",
+    time: "7 min",
+    rating: "4.7",
+    tip: "Famous 75-foot tall Lord Hanuman statue. Best visited in the morning.",
+  },
+  {
+    name: "Amanikere Park",
+    time: "8 min",
+    rating: "4.2",
+    tip: "Beautiful lakefront park with walkways and boating. Great for peaceful evening walks.",
+  },
+  {
+    name: "Shree Siddaganga Mutt",
+    time: "21 min",
+    rating: "4.8",
+    tip: "Historic and sacred spiritual center offering daily free meals to thousands of pilgrims.",
+  },
+  {
+    name: "Mandaragiri Hill",
+    time: "26 min",
+    rating: "4.6",
+    tip: "Unique peacock-feather shaped Jain temple with a climb of 400 steps. Scenic sunset views.",
+  },
+  {
+    name: "Namada Chilume Deer Park",
+    time: "31 min",
+    rating: "4.5",
+    tip: "Wooded deer park with nature trails leading to a spring.",
+  },
+  {
+    name: "Ramadevara Betta",
+    time: "35 min",
+    rating: "4.4",
+    tip: "Hills featuring stairs leading to multiple temples, plus sweeping views.",
+  },
 ];
 
 const reviews = [
@@ -74,6 +110,73 @@ const reviews = [
     author: "SachinRaikar · Tripadvisor",
   },
 ];
+
+const menuItems = {
+  breakfast: [
+    {
+      name: "Idli Vada Combo",
+      price: "₹60",
+      desc: "Steamed rice cakes & crispy lentil donut, served with sambar and fresh coconut chutney.",
+    },
+    {
+      name: "Ghee Masala Dosa",
+      price: "₹80",
+      desc: "Crispy golden crepe filled with spiced potato mash, served with ghee.",
+    },
+    {
+      name: "Chow Chow Bath",
+      price: "₹90",
+      desc: "A harmonious combination of sweet pineapple kesari bath and savory semolina khara bath.",
+    },
+    {
+      name: "Traditional Filter Coffee",
+      price: "₹30",
+      desc: "Freshly brewed chicory-infused South Indian filter coffee.",
+    },
+  ],
+  meals: [
+    {
+      name: "VBIS Special Veg Thali",
+      price: "₹180",
+      desc: "South Indian lunch meals served with rice, sambar, rasam, dry veg curries, curd, and dessert.",
+    },
+    {
+      name: "Nati Koli Biryani",
+      price: "₹240",
+      desc: "Local country-style chicken biryani cooked slow with aromatic jeeraga samba rice.",
+    },
+    {
+      name: "Paneer Butter Masala & Roti",
+      price: "₹160",
+      desc: "Rich tomato-butter gravy cooked with paneer, served with freshly baked butter rotis.",
+    },
+  ],
+  beverages: [
+    {
+      name: "Hot Saffron Badam Milk",
+      price: "₹50",
+      desc: "Warm sweetened milk infused with real almonds, saffron, and cardamoms.",
+    },
+    {
+      name: "Fresh Lime Mint Soda",
+      price: "₹45",
+      desc: "Refreshing carbonated soda infused with freshly squeezed lime and fresh mint.",
+    },
+  ],
+};
+
+const storyDetails = {
+  title: "A Family Tradition of Comfort & Hygiene",
+  paragraphs: [
+    "Established with a core focus of serving travelers passing through Tumakuru, VBIS INN represents clean, simple, and affordable luxury. We believe a budget-friendly stay shouldn't compromise on hygiene, sleep quality, or service.",
+    "Managed by local hoteliers, we take pride in offering personalized care. From clean sheets to fresh filter coffee, every detail is overseen by our resident staff to ensure you feel right at home.",
+  ],
+  stats: [
+    { value: "4.1★", label: "840+ Google Reviews" },
+    { value: "24/7", label: "Front Desk & Care" },
+    { value: "100%", label: "Hygiene & Cleanliness" },
+  ],
+};
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -146,8 +249,13 @@ function CallButton({ variant = "solid" }: { variant?: "solid" | "outline" }) {
 }
 
 function Index() {
+  const [activeTab, setActiveTab] = useState<"overview" | "stay" | "dining" | "guide" | "story">(
+    "overview"
+  );
+  const [foodFilter, setFoodFilter] = useState<"breakfast" | "meals" | "beverages">("breakfast");
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground transition-all duration-300">
       {/* Header */}
       <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
@@ -166,16 +274,16 @@ function Index() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero Section with Asymmetrical Gradient Mask */}
       <section className="relative">
         <img
           src={heroExterior}
           alt="VBIS INN hotel exterior lit up at dusk in Tumakuru"
           width={1600}
           height={1008}
-          className="h-[68vh] min-h-[420px] w-full object-cover"
+          className="h-[52vh] min-h-[380px] w-full object-cover"
         />
-        <div className="absolute inset-0 bg-ink/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-ink/65 to-transparent max-md:bg-ink/75" />
         <div className="absolute inset-0 flex items-center">
           <div className="mx-auto w-full max-w-6xl px-5">
             <p className="hairline-label text-brass">3-star hotel · Melekote, Tumakuru</p>
@@ -202,195 +310,387 @@ function Index() {
         </div>
       </section>
 
-      {/* Trust bar */}
-      <section className="border-b border-border bg-card">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px px-5 py-6 sm:grid-cols-4">
-          <div>
-            <div className="flex items-center gap-1.5">
-              <Star className="h-4 w-4 fill-brass text-brass" />
-              <span className="text-lg font-medium">4.1</span>
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">846 Google reviews</p>
-          </div>
-          <div>
-            <span className="text-lg font-medium">₹1,729</span>
-            <p className="mt-1 text-xs text-muted-foreground">Rooms from, per night</p>
-          </div>
-          <div>
-            <span className="text-lg font-medium">Free</span>
-            <p className="mt-1 text-xs text-muted-foreground">Breakfast &amp; Wi-Fi</p>
-          </div>
-          <div>
-            <span className="text-lg font-medium">24×7</span>
-            <p className="mt-1 text-xs text-muted-foreground">Reception &amp; check-in</p>
+      {/* Interactive Explorer Dashboard Tabs */}
+      <section className="border-b border-border bg-card sticky top-[69px] z-10 shadow-sm">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="flex overflow-x-auto scrollbar-none py-1 gap-2 md:justify-center">
+            {[
+              { id: "overview", label: "Overview", icon: Compass },
+              { id: "stay", label: "Stay", icon: BedDouble },
+              { id: "dining", label: "Taste of Tumakuru", icon: Utensils },
+              { id: "guide", label: "Local Guide", icon: MapPin },
+              { id: "story", label: "Our Story", icon: BookOpen },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`flex items-center gap-2 px-5 py-4 text-sm font-medium transition-all relative shrink-0 ${
+                    isActive
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Icon className={`h-4 w-4 ${isActive ? "text-brass" : ""}`} />
+                  {tab.label}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-brass animate-fade-in" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Rooms */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <p className="hairline-label text-muted-foreground">Rooms &amp; tariff</p>
-        <h2 className="mt-3 text-4xl">Pick a room, call, and it's held for you</h2>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-          Direct rates are the same or better than travel sites — and there's no booking fee.
-        </p>
+      {/* Dynamic Content View Area */}
+      <main className="min-h-[50vh] bg-background">
+        {/* TAB 1: OVERVIEW */}
+        {activeTab === "overview" && (
+          <section className="animate-fade-in py-16">
+            <div className="mx-auto max-w-6xl px-5">
+              <div className="grid gap-12 md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <h2 className="text-4xl text-foreground font-display">
+                    Welcome to Tumakuru's Preferred Comfort Stop
+                  </h2>
+                  <p className="mt-4 text-muted-foreground leading-relaxed text-sm">
+                    Located conveniently close to the NH-48 Bengaluru Highway, VBIS INN is a
+                    sanctuary of hospitality designed for leisure, business travelers, and pilgrims. 
+                    We prioritize absolute cleanliness, comfortable mattress setups, and quiet corridors 
+                    so that you can rest fully.
+                  </p>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {rooms.map((room, i) => (
-            <article
-              key={room.name}
-              className="flex flex-col border border-border bg-card p-6 transition-shadow hover:shadow-lg"
-            >
-              <span
-                className={`hairline-label mb-4 w-fit px-2 py-1 ${i === 0 ? "bg-accent text-accent-foreground" : "invisible"}`}
-              >
-                Best value
-              </span>
+                  <div className="mt-8 grid grid-cols-2 gap-6 border-t border-border pt-8 sm:grid-cols-4">
+                    <div>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-brass text-brass" />
+                        <span className="text-xl font-semibold">4.1</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">846 Google Reviews</p>
+                    </div>
+                    <div>
+                      <span className="text-xl font-semibold">₹1,729</span>
+                      <p className="text-xs text-muted-foreground mt-1">Starting Tariff</p>
+                    </div>
+                    <div>
+                      <span className="text-xl font-semibold">Free</span>
+                      <p className="text-xs text-muted-foreground mt-1">Breakfast & Wi-Fi</p>
+                    </div>
+                    <div>
+                      <span className="text-xl font-semibold">24×7</span>
+                      <p className="text-xs text-muted-foreground mt-1">Front Desk</p>
+                    </div>
+                  </div>
 
-              <h3 className="text-2xl">{room.name}</h3>
-              <p className="mt-2 flex-1 text-sm text-muted-foreground">{room.detail}</p>
-              <p className="mt-6 font-display text-3xl">
-                {room.from}
-                <span className="ml-2 font-sans text-xs text-muted-foreground">/ night</span>
-              </p>
-              <a
-                href={`tel:${PHONE}`}
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-              >
-                <Phone className="h-4 w-4" /> Reserve by phone
-              </a>
-            </article>
-          ))}
-        </div>
-      </section>
+                  <div className="mt-10 border border-border bg-card p-6 rounded-sm">
+                    <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+                      <Heart className="h-4 w-4 text-brass" /> Core Amenities Included
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                      {amenities.map(({ icon: Icon, label }) => (
+                        <div key={label} className="flex items-center gap-3 text-sm">
+                          <Icon className="h-4 w-4 shrink-0 text-brass" />
+                          <span>{label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-      {/* Stay / imagery */}
-      <section className="border-y border-border bg-secondary">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-2 md:items-center">
-          <img
-            src={roomImg}
-            alt="Twin bed air-conditioned guest room at VBIS INN"
-            width={1200}
-            height={900}
-            loading="lazy"
-            className="aspect-4/3 w-full object-cover"
-          />
-          <div>
-            <p className="hairline-label text-muted-foreground">The stay</p>
-            <h2 className="mt-3 text-4xl">Everything a night away should have</h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Rooms are cleaned daily and kept simple: fresh linen, hot water, working AC and
-              a quiet corridor. Downstairs, the dining room serves South Indian breakfast from
-              7 am and a full à la carte menu through the evening.
-            </p>
-            <ul className="mt-8 grid grid-cols-2 gap-4">
-              {amenities.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-center gap-3 text-sm">
-                  <Icon className="h-4 w-4 shrink-0 text-brass" />
-                  {label}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-20 md:grid-cols-2 md:items-center">
-          <div className="md:order-2">
-            <p className="hairline-label text-muted-foreground">Dining</p>
-            <h2 className="mt-3 text-4xl">Filter coffee at 7, biryani by 8</h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Complimentary breakfast for every guest — idli, dosa, upma and filter coffee.
-              The multi-cuisine restaurant and rooftop lounge stay open to residents and
-              walk-in guests alike.
-            </p>
-          </div>
-          <img
-            src={diningImg}
-            alt="South Indian breakfast served at the VBIS INN restaurant"
-            width={1200}
-            height={900}
-            loading="lazy"
-            className="aspect-4/3 w-full object-cover md:order-1"
-          />
-        </div>
-      </section>
-
-      {/* Reviews */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <p className="hairline-label text-muted-foreground">Guest words</p>
-        <h2 className="mt-3 text-4xl">4.1 across 846 reviews</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {reviews.map((r) => (
-            <figure key={r.author} className="border-l-2 border-brass bg-card p-6">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-brass text-brass" />
-                ))}
+                {/* Right block: Quick contact card */}
+                <div className="border border-border bg-card p-8 rounded-sm shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span className="hairline-label text-brass">Immediate Booking</span>
+                    <h3 className="text-3xl font-display mt-2">Skip Middlemen Commission</h3>
+                    <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                      By booking directly with the front desk via phone, you avoid third-party agency 
+                      commission and get instant reservation confirmation.
+                    </p>
+                  </div>
+                  <div className="mt-8 border-t border-border pt-6">
+                    <div className="text-xs text-muted-foreground mb-3 flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Front Desk Staff Active
+                    </div>
+                    <CallButton />
+                    <p className="text-xs text-muted-foreground mt-2">No prepayment required.</p>
+                  </div>
+                </div>
               </div>
-              <blockquote className="mt-4 font-display text-xl leading-snug">
-                “{r.quote}”
-              </blockquote>
-              <figcaption className="mt-4 text-xs text-muted-foreground">{r.author}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
 
-      {/* Nearby */}
-      <section className="border-y border-border bg-secondary">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-2 md:items-center">
-          <div>
-            <p className="hairline-label text-muted-foreground">Around you</p>
-            <h2 className="mt-3 text-4xl">Temples, hills and lakes within half an hour</h2>
-            <ul className="mt-8 divide-y divide-border border-y border-border">
-              {nearby.map((p) => (
-                <li key={p.name} className="flex items-center justify-between gap-4 py-3">
-                  <span className="text-sm">{p.name}</span>
-                  <span className="flex shrink-0 items-center gap-3 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-brass text-brass" />
-                      {p.rating}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {p.time}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <img
-            src={nearbyImg}
-            alt="Jain temple atop Mandaragiri Hill near Tumakuru"
-            width={1200}
-            height={900}
-            loading="lazy"
-            className="aspect-4/3 w-full object-cover"
-          />
-        </div>
-      </section>
+              {/* Reviews Grid */}
+              <div className="mt-20 border-t border-border pt-16">
+                <p className="hairline-label text-muted-foreground">Guest Words</p>
+                <h3 className="text-4xl mt-2 font-display">What visitors say about us</h3>
+                <div className="mt-8 grid gap-6 md:grid-cols-3">
+                  {reviews.map((r) => (
+                    <figure key={r.author} className="relative overflow-hidden border-l-2 border-brass bg-card p-6 shadow-sm">
+                      <span className="absolute -right-2 -top-6 font-display text-8xl text-brass/10 select-none">“</span>
+                      <div className="flex gap-0.5 mb-3">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star key={i} className="h-3.5 w-3.5 fill-brass text-brass" />
+                        ))}
+                      </div>
+                      <blockquote className="font-display text-lg leading-snug text-foreground">
+                        “{r.quote}”
+                      </blockquote>
+                      <figcaption className="mt-4 text-xs text-muted-foreground">{r.author}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
-      {/* Final CTA */}
-      <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-6xl px-5 py-20 text-center">
-          <h2 className="text-4xl sm:text-5xl">Rooms available tonight</h2>
-          <p className="mx-auto mt-4 max-w-md text-sm text-primary-foreground/75">
-            Call the front desk directly — no booking fee, no prepayment, instant confirmation.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <CallButton />
-            <a
-              href={MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-sm border border-primary-foreground/40 px-6 py-3 text-sm font-medium transition-colors hover:bg-primary-foreground/10"
-            >
-              <MapPin className="h-4 w-4" />
-              View on map
-            </a>
-          </div>
-        </div>
-      </section>
+        {/* TAB 2: STAY */}
+        {activeTab === "stay" && (
+          <section className="animate-fade-in py-16">
+            <div className="mx-auto max-w-6xl px-5">
+              <div className="grid gap-12 md:grid-cols-12 md:items-start">
+                {/* Overlapping Layout Style */}
+                <div className="md:col-span-7 relative">
+                  <img
+                    src={roomImg}
+                    alt="VBIS INN double guest room layout"
+                    className="aspect-4/3 w-full object-cover shadow-xl rounded-sm"
+                  />
+                  <div className="absolute -bottom-6 -left-6 bg-brass text-brass-foreground p-6 hidden lg:block rounded-sm shadow-lg max-w-xs">
+                    <span className="hairline-label text-[10px]">Strict Standard</span>
+                    <h4 className="text-lg font-medium mt-1">100% Cotton Linens</h4>
+                    <p className="text-xs mt-1 text-brass-foreground/80">
+                      All linens are professionally laundered after every checkout.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-card p-8 md:p-10 md:col-span-5 border border-border shadow-md rounded-sm">
+                  <p className="hairline-label text-brass">Tariff Plan</p>
+                  <h2 className="mt-2 text-4xl font-display">Decent Rooms, Clear Pricing</h2>
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    All rooms feature attach baths, high-speed Wi-Fi, toiletries, and fresh towels. 
+                    Tariffs include breakfast.
+                  </p>
+
+                  <div className="mt-8 space-y-6">
+                    {rooms.map((room, i) => (
+                      <div
+                        key={room.name}
+                        className="group relative flex items-center justify-between border-b border-border pb-4 transition-all duration-300"
+                      >
+                        <div className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-brass transition-all duration-300 group-hover:w-full" />
+                        <div>
+                          <h4 className="text-lg font-medium flex items-center gap-2">
+                            {room.name}
+                            {i === 0 && (
+                              <span className="text-[10px] uppercase tracking-wider bg-accent text-accent-foreground px-1.5 py-0.5 rounded-sm">
+                                Best Value
+                              </span>
+                            )}
+                          </h4>
+                          <p className="text-xs text-muted-foreground mt-1">{room.detail}</p>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-xl font-semibold font-display">{room.from}</span>
+                          <p className="text-[10px] text-muted-foreground">/ night</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8">
+                    <CallButton />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 3: TASTE OF TUMAKURU (DINING) */}
+        {activeTab === "dining" && (
+          <section className="animate-fade-in py-16">
+            <div className="mx-auto max-w-6xl px-5">
+              <div className="grid gap-12 md:grid-cols-12 md:items-center">
+                <div className="md:col-span-5 md:order-2">
+                  <p className="hairline-label text-brass">Authentic Dining</p>
+                  <h2 className="mt-2 text-4xl font-display">In-House Bistro & Rooftop</h2>
+                  <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                    Start your morning with piping hot idlis and traditional filter coffee. 
+                    Our chef curates a blend of local Karnataka specialties, alongside North Indian 
+                    and Chinese options for dinner.
+                  </p>
+
+                  {/* Filter controls */}
+                  <div className="mt-8 flex gap-2 border-b border-border pb-2">
+                    {[
+                      { id: "breakfast", label: "Breakfast" },
+                      { id: "meals", label: "Lunch/Dinner" },
+                      { id: "beverages", label: "Beverages" },
+                    ].map((btn) => (
+                      <button
+                        key={btn.id}
+                        onClick={() => setFoodFilter(btn.id as any)}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-sm transition-all ${
+                          foodFilter === btn.id
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary text-secondary-foreground hover:bg-border"
+                        }`}
+                      >
+                        {btn.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Selected Menu Category */}
+                  <div className="mt-6 space-y-5">
+                    {menuItems[foodFilter].map((item) => (
+                      <div key={item.name} className="flex justify-between gap-4">
+                        <div>
+                          <h4 className="text-sm font-medium">{item.name}</h4>
+                          <p className="text-xs text-muted-foreground mt-1 max-w-xs">{item.desc}</p>
+                        </div>
+                        <span className="text-sm font-semibold text-brass font-display shrink-0">
+                          {item.price}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="md:col-span-7 md:order-1 relative">
+                  <img
+                    src={diningImg}
+                    alt="Authentic South Indian Breakfast set at VBIS INN"
+                    className="aspect-4/3 w-full object-cover shadow-xl rounded-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 4: LOCAL GUIDE */}
+        {activeTab === "guide" && (
+          <section className="animate-fade-in py-16">
+            <div className="mx-auto max-w-6xl px-5">
+              <div className="grid gap-12 md:grid-cols-12 md:items-center">
+                <div className="md:col-span-6">
+                  <p className="hairline-label text-brass font-medium">Explore the Region</p>
+                  <h2 className="text-4xl mt-2 font-display">Attractions Within Quick Reach</h2>
+                  <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                    Tumakuru is home to beautiful hills, historic temples, and scenic lakes. 
+                    Use our custom distance index below to plan your trip itinerary.
+                  </p>
+
+                  <div className="mt-8 divide-y divide-border border-y border-border">
+                    {nearbyWithTips.map((place) => (
+                      <div key={place.name} className="py-4 group">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-semibold group-hover:text-brass transition-colors">
+                            {place.name}
+                          </span>
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+                            <span className="flex items-center gap-0.5">
+                              <Star className="h-3.5 w-3.5 fill-brass text-brass" />
+                              {place.rating}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {place.time}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed max-w-md hidden group-hover:block animate-fade-in">
+                          {place.tip}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="md:col-span-6 relative">
+                  <img
+                    src={nearbyImg}
+                    alt="Scenic Jain temple on top of Mandaragiri Hill near Tumakuru"
+                    className="aspect-4/3 w-full object-cover shadow-xl rounded-sm"
+                  />
+                  <div className="absolute top-4 right-4 bg-background/95 backdrop-blur px-4 py-3 rounded-sm border border-border shadow-md">
+                    <span className="text-xs font-semibold text-primary block">Highway Proximity</span>
+                    <span className="text-xs text-muted-foreground">Just 5 mins from NH-48</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 5: OUR STORY (ABOUT US) */}
+        {activeTab === "story" && (
+          <section className="animate-fade-in py-16">
+            <div className="mx-auto max-w-6xl px-5">
+              <div className="grid gap-12 md:grid-cols-2 md:items-center">
+                <div>
+                  <p className="hairline-label text-brass">Our Story</p>
+                  <h2 className="text-4xl mt-2 font-display">{storyDetails.title}</h2>
+                  
+                  <div className="mt-6 space-y-4 text-sm text-muted-foreground leading-relaxed">
+                    {storyDetails.paragraphs.map((p, idx) => (
+                      <p key={idx}>{p}</p>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border pt-8">
+                    {storyDetails.stats.map((stat, idx) => (
+                      <div key={idx}>
+                        <span className="text-2xl font-semibold text-primary font-display block">
+                          {stat.value}
+                        </span>
+                        <span className="text-xs text-muted-foreground mt-1 block">
+                          {stat.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border border-border bg-card p-8 rounded-sm shadow-sm">
+                  <h3 className="text-2xl font-display mb-4 text-primary">Commitment to our Guests</h3>
+                  <ul className="space-y-4">
+                    {[
+                      {
+                        title: "Strict Hygiene Checks",
+                        desc: "Sanitized corridors, spotless washrooms, and deep-cleaned mattresses prior to guest arrival.",
+                      },
+                      {
+                        title: "Genuine Local Hospitality",
+                        desc: "Our hosts are native to Tumakuru and can guide you with tailored sightseeing tips.",
+                      },
+                      {
+                        title: "No Hidden Costs",
+                        desc: "The price we state is the price you pay. Free Wi-Fi, water, and parking are standard.",
+                      },
+                    ].map((policy) => (
+                      <li key={policy.title} className="flex gap-3">
+                        <ChevronRight className="h-4 w-4 shrink-0 text-brass mt-1" />
+                        <div>
+                          <h4 className="text-sm font-semibold">{policy.title}</h4>
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            {policy.desc}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-card">
